@@ -14,7 +14,7 @@ namespace HotelObli.Models
 
         public override string ToString()
         {
-            return "
+            return $"{Guest_No} : {Guest_Name}";
         }
     }
 }
