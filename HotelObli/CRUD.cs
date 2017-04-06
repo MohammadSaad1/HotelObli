@@ -15,7 +15,7 @@ namespace HotelObli
     class CRUD
     {
         const string serverUrl = "skoleserver.database.windows.net";
-        public void PostGuestHttp()
+        public void PostGuestHttp(Guest guest)
         {
             using (var client = new HttpClient())
 
@@ -23,17 +23,24 @@ namespace HotelObli
                 client.BaseAddress = new Uri(serverUrl);
                 client.DefaultRequestHeaders.Clear();
 
-                var response = client.PostAsJsonAsync<Guest>("API/Guests", null ).Result;
+                var response = client.PostAsJsonAsync<Guest>("API/Guests", guest).Result;
+
+                try
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string successresponse = $"Gæst indsat ({response.Content.ReadAsStringAsync()})";
+                    }
+                    else
+                    {
+                        string failresponse = $"Gæst ikke indsat({response.StatusCode})";
+                    } }
+
+                catch (Exception e)
+                {
+                    string fejlmeddelselse = $"Der er sket en fejl: {e.Message}";
+                }
                 
-                if (response.IsSuccessStatusCode)
-                {
-                    string successresponse = $"Hotel indsat ({response.Content.ReadAsStringAsync()})";
-                }
-                else
-                {
-                    string failresponse = $"Hotel ikke indsat({response.StatusCode})";
-                }
-            
             }
            
            
