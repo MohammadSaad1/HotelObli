@@ -99,11 +99,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="CRUD.cs" />
+    <Compile Include="Facade\Viewmodel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Guest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Commands\Relaycommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -23,12 +23,14 @@ namespace HotelObli
                 client.BaseAddress = new Uri(serverUrl);
                 client.DefaultRequestHeaders.Clear();
 
-                var response = client.PostAsJsonAsync<Guest>("API/Guests", guest).Result;
+             
 
                 try
                 {
+                    var response = client.PostAsJsonAsync<Guest>("API/Guests", guest).Result;
                     if (response.IsSuccessStatusCode)
                     {
+
                         string successresponse = $"Gæst indsat ({response.Content.ReadAsStringAsync()})";
                     }
                     else
