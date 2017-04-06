@@ -24,7 +24,7 @@ namespace HotelObli
     {
         public MainPage()
         {
-            this.InitializeComponent();
+            
         }
     }
 }
