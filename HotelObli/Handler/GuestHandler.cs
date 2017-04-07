@@ -10,7 +10,7 @@ namespace HotelObli.Handler
     class GuestHandler
     {
         public Viewmodel viewmodel { get; set; }
-        public MyGuestHandler(Viewmodel viewmodel)
+        public void MyGuestHandler(Viewmodel viewmodel)
         {
             this.viewmodel = viewmodel;
         }
