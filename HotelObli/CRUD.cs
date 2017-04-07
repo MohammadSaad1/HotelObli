@@ -8,7 +8,6 @@ using Windows.UI.Notifications;
 using Newtonsoft.Json;
 using HotelObli.Models;
 
-
 namespace HotelObli
 {
     class CRUD
