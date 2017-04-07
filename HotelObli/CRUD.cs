@@ -22,7 +22,7 @@ namespace HotelObli
             {
                 client.BaseAddress = new Uri(serverUrl);
                 client.DefaultRequestHeaders.Clear();
-
+            
              
 
                 try
