@@ -116,7 +116,7 @@ namespace HotelObli
                 catch (Exception e)
                 {
                     string failresponse = $"Der er sket en fejl : ({e.Message})";
-                }
+                } 
             }
         }
     }
