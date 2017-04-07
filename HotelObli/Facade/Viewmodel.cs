@@ -4,20 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HotelObli.Models;
+using System.ComponentModel;
+
 namespace HotelObli.Facade
 {
-    class Viewmodel
+    class Viewmodel : INotifyPropertyChanged
     {
         public Guest Guest { get; set; }
 
-        private int myVar;
 
-        public int MyProperty
+
+
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyname)
         {
-            get { return myVar; }
-            set { myVar = value; }
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
+            }
         }
-
-
     }
 }

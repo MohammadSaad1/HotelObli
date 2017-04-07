@@ -26,5 +26,10 @@ namespace HotelObli
         {
             
         }
+
+        private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
