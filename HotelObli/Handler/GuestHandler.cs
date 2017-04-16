@@ -5,7 +5,7 @@ using System.Text;
 using HotelObli.Facade;
 using System.Threading.Tasks;
 using HotelObli.Models;
-using HotelObli.Facade;
+
 
 namespace HotelObli.Handler
 {
@@ -16,7 +16,7 @@ namespace HotelObli.Handler
         {
             this.viewmodel = viewmodel;
         }
-
+        
         public void AddGuest()
         {
             Guest tempGuest = new Guest();

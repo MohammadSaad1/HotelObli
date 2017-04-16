@@ -15,6 +15,10 @@ namespace HotelObli.Facade
 
 
         public Guest Guest { get; set; }
+        public int Guest_No { get; set; }
+        public string Name { get; set; }
+
+        public string Address { get; set; }
 
         public GuestSingleton GuestSingletonInstance { get; set; }
 
@@ -22,15 +26,21 @@ namespace HotelObli.Facade
         public Relaycommand DeleteGuestCommand { get; set; }
         public Relaycommand EditGuestCommand { get; set; }
 
+        public Relaycommand GetGuestCommand { get; set; }
+
         public GuestHandler GuestHandlerInstance { get; set; }
 
         public Viewmodel()
         {
 
+            Guest_No = Guest.Guest_No;
+            Name = Guest.Name;
+            Address = Guest.Address;
             GuestHandler GuestHandlerInstance = new GuestHandler();
             AddGuestCommand = new Relaycommand(GuestHandlerInstance.AddGuest);
             DeleteGuestCommand = new Relaycommand(GuestHandlerInstance.RemoveGuest);
             EditGuestCommand = new Relaycommand(GuestHandlerInstance.EditGuest);
+            
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyname)
