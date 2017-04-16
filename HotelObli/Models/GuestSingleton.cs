@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HotelObli.Handler;
+using HotelObli.Models;
+using HotelObli.Facade;
 
 namespace HotelObli.Models
 {
@@ -20,10 +23,10 @@ namespace HotelObli.Models
             }
         }
 
-        public Guest FileGuest { get; set; }
-        private ObservableCollection<Guest> e;
+        public Guest Guest { get; set; }
+        private List<Guest> e;
 
-        public ObservableCollection<Guest> GuestList
+        public List<Guest> GuestList
         {
             get { return e; }
             set
@@ -32,7 +35,46 @@ namespace HotelObli.Models
                 OnPropertyChanged(nameof(GuestList));
             }
         }
+
+        public CRUD CRUD { get; set; }
         public static GuestSingleton instance { get; set; } = new GuestSingleton();
+
+        public GuestSingleton()
+        {
+            GuestList = new List<Guest>();
+            LoadGuestJson();
+        }
+
+        public async void DeleteGuest(Guest GuestDelete)
+        {
+            await CRUD.DeleteGuestHTTP(GuestDelete);
+            LoadGuestJson();
+        }
+        public async void AddGuest(Guest PostGuest)
+        {
+            await CRUD.PostGuestHttp(PostGuest);
+            LoadGuestJson();
+        }
+
+        public async void EditGuest(Guest EditGuest)
+        {
+            await CRUD.ChangeGuestHTTP(EditGuest);
+            LoadGuestJson();
+        }
+
+        public async void LoadGuestJson()
+        {
+            try
+            {
+                GuestList = await CRUD.GetGuestHTTP();
+            }
+            catch (Exception exception)
+            {
+                string Message = $"Der er sket en fejl: ({exception.Message})";
+
+            }
+        }
 
     }
 }
+    

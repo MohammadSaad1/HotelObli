@@ -4,21 +4,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 
 namespace HotelObli
 {
-    class Relaycommand : ICommand
+    public class Relaycommand : ICommand
     {
+        private DispatcherTimer CanExecutetimer;
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(object parameter)
+        public Relaycommand(Action execute) : this(execute, null)
         {
-            throw new NotImplementedException();
         }
 
+        private void CanExecutetimer_Tick(object sender, object e)
+        {
+            this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private Action methodToExecute = null;
+        private Func<bool> methodToDecectCanExecute = null;
+
+        public Relaycommand(Action methodToExecute, Func<bool> methodToDetectCanExecute)
+        {
+            this.methodToExecute = methodToExecute;
+            this.methodToDecectCanExecute = methodToDetectCanExecute;
+
+            this.CanExecutetimer = new DispatcherTimer();
+            this.CanExecutetimer.Tick += CanExecutetimer_Tick;
+            this.CanExecutetimer.Interval = new TimeSpan(0, 0, 1);
+            this.CanExecutetimer.Start();
+        }
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            this.methodToExecute();
+        }
+        public bool CanExecute(object parameter)
+        {
+            if (this.methodToDecectCanExecute == null)
+            {
+                return true;
+            }
+            else
+            {
+                return this.methodToDecectCanExecute();
+            }
         }
     }
 }

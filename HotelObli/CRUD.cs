@@ -6,117 +6,69 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using HotelObli.Models;
+
 
 namespace HotelObli
 {
     class CRUD
     {
+ 
         const string serverUrl = "skoleserver.database.windows.net";
-        public void PostGuestHttp()
+        public static async Task PostGuestHttp(Guest GuestPost)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(serverUrl);
                 client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                await client.PostAsJsonAsync<Guest>("api/guests", GuestPost);
+            }
+        }
 
-                var response = client.PostAsJsonAsync<Guest>("API/Guests", null).Result;
+        public static async Task DeleteGuestHTTP(Guest GuestDelete)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                string urlString = "api/guests/" + GuestDelete.Guest_No.ToString();
+                await client.DeleteAsync(urlString);
+            }
+        }
 
+        public static async Task<List<Guest>> GetGuestHTTP()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                var response = await client.GetAsync("api/Guests");
                 if (response.IsSuccessStatusCode)
                 {
-                    string successresponse = $"Gæst indsat ({response.Content.ReadAsStringAsync()})";
+                    var guestListe = await response.Content.ReadAsAsync<List<Guest>>();
+                    return guestListe;
                 }
                 else
                 {
-                    string failresponse = $"Kunne ikke indsætte gæst ({response.StatusCode})";
-                }
-            }
-        }
-
-        public void DeleteGuestHTTP()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(serverUrl);
-                client.DefaultRequestHeaders.Clear();
-
-                string urlString = "api/hotels/1015";
-
-                try
-                {
-                    HttpResponseMessage response = client.DeleteAsync(urlString).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string succesresponse = $"Gæst slettet ({response.StatusCode})";
-                    }
-                    else
-                    {
-                        string failresponse = $"Kunne ikke slette gæst ({response.StatusCode})";
-                    }
-                }
-                catch (Exception e)
-                {
-                    string failresponse = $"Der er sket en fejl : ({e.Message})";
-                }
-            }
-        }
-
-        public void GetGuestHTTP()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(serverUrl);
-                client.DefaultRequestHeaders.Clear();
-
-                string urlString = "api/guests";
-
-                try
-                {
-                    HttpResponseMessage response = client.GetAsync(urlString).Result;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var GæstList = response.Content.ReadAsAsync<List<Guest>>().Result;
-                        foreach (var gæst in GæstList)
-                        {
-                            string succesresponse = $"Oplysninger om gæst : ({response.StatusCode})";
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    string failresponse = $"Der er sket en fejl : ({e.Message})";
+                    return null;
                 }
 
             }
 
         }
 
-        public void ChangeGuestHTTP()
+        public static async Task ChangeGuestHTTP(Guest GuestEdit)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(serverUrl);
                 client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string urlString = "api/guests/" + GuestEdit.Guest_No.ToString();
 
-                try
-                {
-                    var response = client.PutAsJsonAsync<Guest>("API/Hotels/1015", null).Result;
+                await client.PutAsJsonAsync(urlString, GuestEdit);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string successrephose = $"Gæsten er ændret ({response.Content.ReadAsStringAsync()})";
-                    }
-                    else
-                    {
-                        string failresponse = $"Gæsten er ikke ændret ({response.StatusCode})";
-                    }
-                }
-                catch (Exception e)
-                {
-                    string failresponse = $"Der er sket en fejl : ({e.Message})";
-                }  
             }
+        }
         }
     }
-}
